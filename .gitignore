@@ -3,4 +3,7 @@
 .profile
 .inputrc
 .viminfo
+.bash_history
+.gitconfig
+
 
