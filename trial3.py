@@ -1,10 +1,10 @@
-#The code, on running, gave an error
+#The code, on running, gave an error AttributeError: module 'socket' has no attribute 'AF_PACKET'
 import socket
 import struct
 import textwrap
 
 def main():
-    connection = socket.socket(socket.AF_INET6, socket.SOCK_RAW, socket.ntohs(3))
+    connection = socket.socket(socket.AF_PACKET, socket.SOCK_RAW, socket.ntohs(3))
     while True:
         raw_data, addr= connection.receivefrom(65536)
         dest_mac, src_mac, ethernet_proto, data= ethernet_frame(raw_data)
