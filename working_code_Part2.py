@@ -14,11 +14,12 @@ def ipv4(addr):
 def icmp_packet(data):
     icmp_type, code, checksum = struct.unpack('!B B H', data[:4])
     return icmp_type, code, checksum, data[4:]
-#Unpack TCP section
+
+#Unpack if the data is TCP
 def tcp_section(data):
-    (source_port, destiantion_port, sequence, acknowledgement, offset_reserved_flags)=struct.unpack('! H H L L H',data[:14])
+    (source_port, destiantion_port, sequence, acknowledgement, offset_reserved_flags)= struct.unpack('! H H L L H',data[:14])
     offset= (offset_reserved_flags >> 12) * 4
-    flag_ugh = (offset_reserved_flags & 32) >> 5
+    flag_ugh = (offset_reserved_flags & 32) >> 5 # Using anding method to shift the flags as a way to separate it form the rest of the data
     flag_ack = (offset_reserved_flags & 16) >> 4
     flag_psh = (offset_reserved_flags & 8) >> 3
     flag_rst = (offset_reserved_flags & 4) >> 2
@@ -26,6 +27,7 @@ def tcp_section(data):
     flag_fin =  offset_reserved_flags & 1
     return source_port,destiantion_port, sequence, acknowledgement, flag_ugh,flag_ack,flag_psh, flag_rst, flag_syn, flag_fin, data[offset:]
 
+#Unpack if the data is UDP
 def udp_section(data):
     source_port, destiantion_port, size = struct.unpack('! H H 2x H', data[:8])
     return source_port, destiantion_port, size, data[8:]
