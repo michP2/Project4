@@ -1,8 +1,8 @@
 #Unpacking the IPv4 Packet
 def ipv4_packet(data):
     version_header_length=data[0]
-    version = version_header_length >> 4
-    header_length =(version_header_length & 15) *4
+    version = version_header_length >> 4 #push out the version_header_length by 4
+    header_length =(version_header_length & 15) *4 #by anding the version_header_length with 15 and multiply it by 4 to get the actual header_lenght
     ttl, proto, src, target = struct.unpack('! 8x B B 2x 4s 4s',data[:20])# struct  is underlined because this part of the code is going to be part of the main function in Part 1 where import is sruct is used
     return version, header_length, ttl, proto, ipv4(src), ipv4(target), data[header_length:]
 
